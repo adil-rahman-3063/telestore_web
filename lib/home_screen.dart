@@ -267,263 +267,290 @@ class HomeScreenState extends State<HomeScreen> {
     return SafeArea(
       child: RefreshIndicator(
         onRefresh: loadData,
-        child: CustomScrollView(
-          slivers: [
-            SliverPadding(
-              padding: const EdgeInsets.fromLTRB(24, 32, 24, 16),
-              sliver: SliverToBoxAdapter(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 1200),
+            child: CustomScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              slivers: [
+                SliverPadding(
+                  padding: const EdgeInsets.fromLTRB(24, 32, 24, 16),
+                  sliver: SliverToBoxAdapter(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Image.asset(
-                          'assets/icon.png',
-                          width: 40,
-                          height: 40,
-                          color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null,
-                        ),
-                        const SizedBox(width: 12),
-                        Text(
-                          'TeleStore',
-                          style: theme.textTheme.displaySmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            
-            if (_folderStack.isNotEmpty)
-              SliverPadding(
-                padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
-                sliver: SliverToBoxAdapter(
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _folderStack.removeLast();
-                        });
-                        loadData();
-                      },
-                      child: GlassContainer(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        borderRadius: 24,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
+                        Row(
                           children: [
-                            const Icon(Icons.arrow_back_ios_new_rounded, size: 16, color: AppColors.primary),
-                            const SizedBox(width: 8),
+                            Image.asset(
+                              'assets/icon.png',
+                              width: 40,
+                              height: 40,
+                              color: Theme.of(context).brightness == Brightness.dark ? Colors.white : null,
+                            ),
+                            const SizedBox(width: 12),
                             Text(
-                              _folderStack.map((f) => f.name).join(' / '),
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: AppColors.primary,
+                              'TeleStore',
+                              style: theme.textTheme.displaySmall?.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            
-            if (_isLoading)
-              SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                sliver: SliverGrid(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: folderCrossAxisCount,
-                    mainAxisSpacing: 16,
-                    crossAxisSpacing: 16,
-                    childAspectRatio: 1,
-                  ),
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) => const Skeleton(),
-                    childCount: 6,
-                  ),
-                ),
-              )
-            else ...[
-              // Folders Section
-              if (_folders.isNotEmpty) ...[
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                  sliver: SliverToBoxAdapter(
-                    child: Text(
-                      'Folders',
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        color: AppColors.grey400,
-                      ),
-                    ),
-                  ),
-                ),
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  sliver: SliverGrid(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: folderCrossAxisCount,
-                      mainAxisSpacing: 16,
-                      crossAxisSpacing: 16,
-                      childAspectRatio: 1, // Perfectly square
-                    ),
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        final folder = _folders[index];
-                        return GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _folderStack.add(folder);
-                            });
-                            loadData();
-                          },
-                          onLongPress: () => _showContextMenu(context, folder: folder),
-                          onSecondaryTap: () => _showContextMenu(context, folder: folder),
-                          child: GlassContainer(
-                            padding: const EdgeInsets.all(16),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Icon(
-                                  Icons.folder_rounded,
-                                  size: 40,
-                                  color: AppColors.primaryLight,
-                                ),
-                                Text(
-                                  folder.name,
-                                  style: theme.textTheme.titleMedium,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                      childCount: _folders.length,
-                    ),
-                  ),
-                ),
-              ],
-              
-              const SliverToBoxAdapter(child: SizedBox(height: 32)),
-
-              // Files Section
-              if (_files.isNotEmpty) ...[
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                  sliver: SliverToBoxAdapter(
-                    child: Text(
-                      'Files',
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        color: AppColors.grey400,
-                      ),
-                    ),
-                  ),
-                ),
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  sliver: SliverGrid(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: fileCrossAxisCount,
-                      mainAxisSpacing: 16,
-                      crossAxisSpacing: 16,
-                      childAspectRatio: 1, // perfectly square
-                    ),
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        final file = _files[index];
-                        final ext = file.fileName.toLowerCase();
-                        final isImage = ext.endsWith('.jpg') || ext.endsWith('.jpeg') || 
-                                        ext.endsWith('.png') || ext.endsWith('.gif') || 
-                                        ext.endsWith('.webp');
-                                        
-                        return GestureDetector(
-                          onLongPress: () => _showContextMenu(context, file: file),
-                          onSecondaryTap: () => _showContextMenu(context, file: file),
-                          child: GlassContainer(
-                            padding: const EdgeInsets.all(8),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              if (isImage && _userId != null)
-                                Expanded(
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(8),
-                                    child: Image.network(
-                                      '${ApiService.baseUrl}/download/$_userId/${file.id}',
-                                      fit: BoxFit.cover,
-                                      width: double.infinity,
-                                      errorBuilder: (context, error, stackTrace) => const Icon(
-                                        Icons.image_not_supported_outlined,
-                                        size: 32,
-                                        color: Colors.white70,
+                            const SizedBox(width: 12),
+                            ValueListenableBuilder<bool>(
+                              valueListenable: ApiService.isConnected,
+                              builder: (context, isConnected, child) {
+                                return Container(
+                                  width: 8,
+                                  height: 8,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: isConnected ? Colors.greenAccent : Colors.redAccent,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: (isConnected ? Colors.greenAccent : Colors.redAccent).withOpacity(0.5),
+                                        blurRadius: 6,
+                                        spreadRadius: 2,
                                       ),
-                                    ),
+                                    ],
                                   ),
-                                )
-                              else
-                                const Expanded(
-                                  child: Icon(
-                                    Icons.insert_drive_file_outlined,
-                                    size: 32,
-                                    color: Colors.white70,
-                                  ),
-                                ),
-                              const SizedBox(height: 8),
-                              Text(
-                                file.fileName,
-                                style: theme.textTheme.bodySmall?.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                      },
-                      childCount: _files.length,
-                    ),
-                  ),
-                ),
-              ],
-              
-              if (_folders.isEmpty && _files.isEmpty)
-                SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.cloud_off_rounded,
-                          size: 64,
-                          color: AppColors.grey500.withAlpha(128),
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          'Your storage is empty.',
-                          style: theme.textTheme.bodyLarge?.copyWith(
-                            color: AppColors.grey400,
-                          ),
+                                );
+                              },
+                            ),
+                          ],
                         ),
                       ],
                     ),
                   ),
                 ),
                 
-              const SliverToBoxAdapter(child: SizedBox(height: 100)), // Space for scrolling
-            ]
-          ],
+                if (_folderStack.isNotEmpty)
+                  SliverPadding(
+                    padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
+                    sliver: SliverToBoxAdapter(
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _folderStack.removeLast();
+                            });
+                            loadData();
+                          },
+                          child: GlassContainer(
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            borderRadius: 24,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(Icons.arrow_back_ios_new_rounded, size: 16, color: AppColors.primary),
+                                const SizedBox(width: 8),
+                                Text(
+                                  _folderStack.map((f) => f.name).join(' / '),
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    color: AppColors.primary,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                
+                if (_isLoading)
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    sliver: SliverGrid(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: folderCrossAxisCount,
+                        mainAxisSpacing: 16,
+                        crossAxisSpacing: 16,
+                        childAspectRatio: 1,
+                      ),
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) => const Skeleton(),
+                        childCount: 6,
+                      ),
+                    ),
+                  )
+                else ...[
+                  // Folders Section
+                  if (_folders.isNotEmpty) ...[
+                    SliverPadding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                      sliver: SliverToBoxAdapter(
+                        child: Text(
+                          'Folders',
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            color: AppColors.grey400,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SliverPadding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      sliver: SliverGrid(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: folderCrossAxisCount,
+                          mainAxisSpacing: 16,
+                          crossAxisSpacing: 16,
+                          childAspectRatio: 1, // Perfectly square
+                        ),
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            final folder = _folders[index];
+                            return GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _folderStack.add(folder);
+                                });
+                                loadData();
+                              },
+                              onLongPress: () => _showContextMenu(context, folder: folder),
+                              onSecondaryTap: () => _showContextMenu(context, folder: folder),
+                              child: GlassContainer(
+                                padding: const EdgeInsets.all(16),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Icon(
+                                      Icons.folder_rounded,
+                                      size: 40,
+                                      color: AppColors.primaryLight,
+                                    ),
+                                    Text(
+                                      folder.name,
+                                      style: theme.textTheme.titleMedium,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                          childCount: _folders.length,
+                        ),
+                      ),
+                    ),
+                  ],
+                  
+                  const SliverToBoxAdapter(child: SizedBox(height: 32)),
+
+                  // Files Section
+                  if (_files.isNotEmpty) ...[
+                    SliverPadding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                      sliver: SliverToBoxAdapter(
+                        child: Text(
+                          'Files',
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            color: AppColors.grey400,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SliverPadding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      sliver: SliverGrid(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: fileCrossAxisCount,
+                          mainAxisSpacing: 16,
+                          crossAxisSpacing: 16,
+                          childAspectRatio: 1, // perfectly square
+                        ),
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            final file = _files[index];
+                            final ext = file.fileName.toLowerCase();
+                            final isImage = ext.endsWith('.jpg') || ext.endsWith('.jpeg') || 
+                                            ext.endsWith('.png') || ext.endsWith('.gif') || 
+                                            ext.endsWith('.webp');
+                                            
+                            return GestureDetector(
+                              onLongPress: () => _showContextMenu(context, file: file),
+                              onSecondaryTap: () => _showContextMenu(context, file: file),
+                              child: GlassContainer(
+                                padding: const EdgeInsets.all(8),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  if (isImage && _userId != null)
+                                    Expanded(
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(8),
+                                        child: Image.network(
+                                          '${ApiService.baseUrl}/download/$_userId/${file.id}',
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                          errorBuilder: (context, error, stackTrace) => const Icon(
+                                            Icons.image_not_supported_outlined,
+                                            size: 32,
+                                            color: Colors.white70,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  else
+                                    const Expanded(
+                                      child: Icon(
+                                        Icons.insert_drive_file_outlined,
+                                        size: 32,
+                                        color: Colors.white70,
+                                      ),
+                                    ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    file.fileName,
+                                    style: theme.textTheme.bodySmall?.copyWith(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                          },
+                          childCount: _files.length,
+                        ),
+                      ),
+                    ),
+                  ],
+                  
+                  if (_folders.isEmpty && _files.isEmpty)
+                    SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.cloud_off_rounded,
+                              size: 64,
+                              color: AppColors.grey500.withAlpha(128),
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              'Your storage is empty.',
+                              style: theme.textTheme.bodyLarge?.copyWith(
+                                color: AppColors.grey400,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    
+                  const SliverToBoxAdapter(child: SizedBox(height: 100)), // Space for scrolling
+                ]
+              ],
+            ),
+          ),
         ),
       ),
     );

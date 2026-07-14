@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,6 +8,31 @@ import 'models/folder.dart';
 import 'models/file_item.dart';
 
 class ApiService {
+  static final ValueNotifier<bool> isConnected = ValueNotifier<bool>(true);
+  static Timer? _healthTimer;
+
+  static void startHealthCheck() {
+    _healthTimer?.cancel();
+    _healthTimer = Timer.periodic(const Duration(seconds: 5), (_) async {
+      final uri = Uri.parse('$baseUrl/health');
+      try {
+        final response = await http.get(uri).timeout(const Duration(seconds: 3));
+        if (response.statusCode == 200) {
+          isConnected.value = true;
+        } else {
+          isConnected.value = false;
+        }
+      } catch (e) {
+        isConnected.value = false;
+      }
+    });
+  }
+
+  static void stopHealthCheck() {
+    _healthTimer?.cancel();
+    _healthTimer = null;
+  }
+
   // Base URL is dynamic. Web uses 127.0.0.1, Android uses 10.0.2.2 (Emulator loopback)
   static String get baseUrl {
     if (kIsWeb) {

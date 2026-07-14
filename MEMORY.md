@@ -43,13 +43,11 @@ The project has three main codebases:
 2. **Asset Syncing:** Replicated all assets and dependencies from `telestore` to `telestore_web`.
 3. **Compilation Fixes:** Resolved syntax/compilation issues in `home_screen.dart` (restored missing closing parentheses on `GlassContainer`).
 4. **Code Porting:** Ported all lib files successfully from `telestore` to `telestore_web`.
+5. **Layout Responsiveness:** Applied `ConstrainedBox` across forms and grid views to limit max widths (600px for forms, 1200px for grids) on Desktop and Web targets.
+6. **Backend Health Polling:** Added a background health check polling the backend `/health` endpoint, displayed as a real-time glowing connection indicator in the app header.
 
 ### 🚧 Next Steps (To Be Implemented)
-- **Step 1: Layout Responsiveness**
-  - Adjust grid layouts in `home_screen.dart` to use responsive layout builders, ensuring correct grid column count on wide monitors vs mobile screens.
-- **Step 2: File Uploading**
-  - Implement file selection via `file_picker` and upload functionality to backend `/upload` route.
-- **Step 3: Folder Navigation**
-  - Allow users to tap and enter subfolders.
-- **Step 4: File Interactions**
-  - Implement download, delete, rename, and preview logic.
+- **Step 1: File Uploading & Interactions**
+  - Ensure file uploads, downloads, rename, and delete functions are fully hooked up to backend APIs.
+- **Step 2: Folder Navigation**
+  - Polish subfolder navigation and context menus.

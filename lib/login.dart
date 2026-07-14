@@ -122,15 +122,19 @@ class _LoginPageState extends State<LoginPage> {
             ],
           ),
         ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 600),
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                 const SizedBox(height: 60),
                 // Logo or App Name
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset(
                       'assets/icon.png',
@@ -173,7 +177,9 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
-    );
+    ),
+  ),
+);
   }
 
   Widget _buildMobileView() {

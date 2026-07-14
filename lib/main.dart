@@ -6,6 +6,7 @@ import 'core/theme/app_theme.dart';
 import 'main_scaffold.dart';
 
 void main() {
+  ApiService.startHealthCheck();
   runApp(const MyApp());
 }
 

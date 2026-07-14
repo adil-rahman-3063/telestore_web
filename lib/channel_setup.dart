@@ -80,150 +80,155 @@ class _ChannelSetupPageState extends State<ChannelSetupPage> {
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
-            return SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            return Center(
               child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: constraints.maxHeight),
-                child: IntrinsicHeight(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 32),
-                      Center(
-                        child: Container(
-                          padding: const EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            color: AppColors.primarySurface,
-                            shape: BoxShape.circle,
+                constraints: const BoxConstraints(maxWidth: 600),
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                    child: IntrinsicHeight(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 32),
+                          Center(
+                            child: Container(
+                              padding: const EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                color: AppColors.primarySurface,
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.cloud_upload_rounded,
+                                size: 64,
+                                color: AppColors.primary,
+                              ),
+                            ),
                           ),
-                          child: const Icon(
-                            Icons.cloud_upload_rounded,
-                            size: 64,
-                            color: AppColors.primary,
+                          const SizedBox(height: 32),
+                          Text(
+                            'Link your Storage',
+                            style: theme.textTheme.headlineMedium,
                           ),
-                        ),
-                      ),
-                      const SizedBox(height: 32),
-                      Text(
-                        'Link your Storage',
-                        style: theme.textTheme.headlineMedium,
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        'TeleStore uses a private Telegram Channel as your infinite cloud drive.',
-                        style: theme.textTheme.bodyLarge,
-                      ),
-                      const SizedBox(height: 24),
-                      Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: isDark ? AppColors.grey800 : AppColors.primarySurface,
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: isDark ? AppColors.grey700 : AppColors.primaryLight,
+                          const SizedBox(height: 12),
+                          Text(
+                            'TeleStore uses a private Telegram Channel as your infinite cloud drive.',
+                            style: theme.textTheme.bodyLarge,
                           ),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
+                          const SizedBox(height: 24),
+                          Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: isDark ? AppColors.grey800 : AppColors.primarySurface,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: isDark ? AppColors.grey700 : AppColors.primaryLight,
+                              ),
+                            ),
+                            child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Icon(
-                                  Icons.looks_one_rounded,
-                                  color: isDark ? Colors.white : AppColors.primary,
-                                  size: 20,
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: Text(
-                                    'Create a new Private Channel in Telegram.',
-                                    style: theme.textTheme.bodyMedium?.copyWith(
-                                      color: isDark ? Colors.white : AppColors.primaryDark,
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Icon(
+                                      Icons.looks_one_rounded,
+                                      color: isDark ? Colors.white : AppColors.primary,
+                                      size: 20,
                                     ),
-                                  ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Text(
+                                        'Create a new Private Channel in Telegram.',
+                                        style: theme.textTheme.bodyMedium?.copyWith(
+                                          color: isDark ? Colors.white : AppColors.primaryDark,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 12),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Icon(
+                                      Icons.looks_two_rounded,
+                                      color: isDark ? Colors.white : AppColors.primary,
+                                      size: 20,
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Text(
+                                        'Add @ShowJsonBot as an Administrator.',
+                                        style: theme.textTheme.bodyMedium?.copyWith(
+                                          color: isDark ? Colors.white : AppColors.primaryDark,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 12),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Icon(
+                                      Icons.looks_3_rounded,
+                                      color: isDark ? Colors.white : AppColors.primary,
+                                      size: 20,
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Text(
+                                        'The bot will immediately send a JSON message. Copy that entire message and paste it below!',
+                                        style: theme.textTheme.bodyMedium?.copyWith(
+                                          color: isDark ? Colors.white : AppColors.primaryDark,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 12),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Icon(
-                                  Icons.looks_two_rounded,
-                                  color: isDark ? Colors.white : AppColors.primary,
-                                  size: 20,
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: Text(
-                                    'Add @ShowJsonBot as an Administrator.',
-                                    style: theme.textTheme.bodyMedium?.copyWith(
-                                      color: isDark ? Colors.white : AppColors.primaryDark,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                          ),
+                          const SizedBox(height: 32),
+                          Text(
+                            'Paste JSON or Channel ID',
+                            style: theme.textTheme.labelLarge,
+                          ),
+                          const SizedBox(height: 8),
+                          TextField(
+                            controller: _channelIdController,
+                            maxLines: 4,
+                            minLines: 1,
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              color: isDark ? Colors.white : AppColors.grey900,
                             ),
-                            const SizedBox(height: 12),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Icon(
-                                  Icons.looks_3_rounded,
-                                  color: isDark ? Colors.white : AppColors.primary,
-                                  size: 20,
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: Text(
-                                    'The bot will immediately send a JSON message. Copy that entire message and paste it below!',
-                                    style: theme.textTheme.bodyMedium?.copyWith(
-                                      color: isDark ? Colors.white : AppColors.primaryDark,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                            decoration: InputDecoration(
+                              hintText: 'Paste the message from @ShowJsonBot here...',
+                              filled: true,
+                              fillColor: isDark ? AppColors.grey800 : Colors.white,
                             ),
-                          ],
-                        ),
+                          ),
+                          const Spacer(),
+                          SizedBox(
+                            width: double.infinity,
+                            height: 56,
+                            child: ElevatedButton(
+                              onPressed: _isLoading ? null : _onSavePressed,
+                              child: _isLoading
+                                  ? const SizedBox(
+                                      width: 24,
+                                      height: 24,
+                                      child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                                    )
+                                  : const Text('Save & Continue'),
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                        ],
                       ),
-                      const SizedBox(height: 32),
-                      Text(
-                        'Paste JSON or Channel ID',
-                        style: theme.textTheme.labelLarge,
-                      ),
-                      const SizedBox(height: 8),
-                      TextField(
-                        controller: _channelIdController,
-                        maxLines: 4,
-                        minLines: 1,
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          color: isDark ? Colors.white : AppColors.grey900,
-                        ),
-                        decoration: InputDecoration(
-                          hintText: 'Paste the message from @ShowJsonBot here...',
-                          filled: true,
-                          fillColor: isDark ? AppColors.grey800 : Colors.white,
-                        ),
-                      ),
-                      const Spacer(),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 56,
-                        child: ElevatedButton(
-                          onPressed: _isLoading ? null : _onSavePressed,
-                          child: _isLoading
-                              ? const SizedBox(
-                                  width: 24,
-                                  height: 24,
-                                  child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
-                                )
-                              : const Text('Save & Continue'),
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-                    ],
+                    ),
                   ),
                 ),
               ),

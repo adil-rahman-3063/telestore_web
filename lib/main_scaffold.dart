@@ -232,9 +232,12 @@ class _MainScaffoldState extends State<MainScaffold> {
             right: 0,
             child: SizedBox(
               height: 140, // Expanded height to allow for the "Pull Up" animation
-              child: Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 1200),
+                  child: Stack(
+                    alignment: Alignment.bottomCenter,
+                    children: [
                   // LEFT ACTION (Add File) - Only visible on Home
                   AnimatedPositioned(
                     duration: const Duration(milliseconds: 350),
@@ -277,7 +280,9 @@ class _MainScaffoldState extends State<MainScaffold> {
                       ),
                     ),
                   ),
-                ],
+                    ],
+                  ),
+                ),
               ),
             ),
           )
